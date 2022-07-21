@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
+import TodoCard from './TodoCard';
 import logo from './logo.svg';
 import './App.css';
 
 class App extends Component {
-  constructor(){
-    super()
+  constructor(props){
+    super(props)
     // this method SUPERCEDES the parent element
 
     this.state = {
@@ -31,6 +32,14 @@ class App extends Component {
     this.setState({inputValue: ""})
   }
 
+  deleteItem = (index) => {
+    console.log(index);
+    let copyOfList = this.state.listOfTodos;
+    copyOfList.splice(index, 1)
+    // I want to start the splice at the index nd then only delete 1 item
+    this.setState({listOfTodos: [...copyOfList]})
+  }
+
 
   render() {
   return (
@@ -41,16 +50,16 @@ class App extends Component {
             <input type="text" value={this.state.inputValue} onChange={this.handleChange}></input>
           <button type="submit">Submit</button>
           </form>
-          <p>
-            {this.state.isClicked ? "true" : "false"}
-          </p>
+          <ol>{this.state.listOfTodos.map((todo, index) => {
+            return <TodoCard key={index} index={index} title={todo} clickToRemove={this.deleteItem}/>
+          })}</ol>
           <a
             className="App-link"
             href="https://reactjs.org"
             target="_blank"
             rel="noopener noreferrer"
           >
-            Learn React
+            {this.props.name}
           </a>
         </header>
       </div>
